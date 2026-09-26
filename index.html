@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Local-first multilingual CV builder based on recommendations from Utdanning.no and NAV.">
+  <title>CV Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <a class="skip-link no-print" href="#main-content" data-i18n="skipToContent">Перейти к содержанию</a>
+  <header class="app-header no-print">
+    <div class="header-inner">
+      <div class="brand-block">
+        <div class="brand-mark" aria-hidden="true">CV</div>
+        <div class="brand-copy">
+          <h1 id="ui-title" data-i18n="appTitle">Конструктор резюме</h1>
+          <p class="standards-line">
+            <span data-i18n="standard">Стандарт:</span>
+            <a href="https://utdanning.no/utdanningsvalg_artikkel_slik_skriver_du_cv" target="_blank" rel="noopener noreferrer">Utdanning.no<span class="external-mark" aria-hidden="true">↗</span></a>
+            <span aria-hidden="true">&amp;</span>
+            <a href="https://arbeidsplassen.nav.no/slik-skriver-du-en-god-cv" target="_blank" rel="noopener noreferrer">NAV<span class="external-mark" aria-hidden="true">↗</span></a>
+          </p>
+        </div>
+      </div>
+
+      <div class="toolbar" aria-label="Настройки документа">
+        <label class="select-control" for="sel-ui-lang">
+          <span data-i18n="uiLanguage">Интерфейс</span>
+          <select id="sel-ui-lang">
+            <option value="ru" selected>Русский</option>
+            <option value="nb">Bokmål</option>
+            <option value="nn">Nynorsk</option>
+            <option value="en">English</option>
+          </select>
+        </label>
+
+        <label class="select-control" for="sel-cv-lang">
+          <span data-i18n="cvLanguage">Язык CV</span>
+          <select id="sel-cv-lang">
+            <option value="nb" selected>Norsk (Bokmål)</option>
+            <option value="nn">Norsk (Nynorsk)</option>
+            <option value="en">English</option>
+            <option value="ru">Русский</option>
+          </select>
+        </label>
+
+        <button type="button" id="btn-print" class="primary-button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5M7 17h10v4H7v-4Zm-2 0H3v-7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v7h-2M17 12h.01"/></svg>
+          <span data-i18n="downloadPdf">Скачать PDF</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="workspace">
+    <aside id="cv-editor" class="editor-panel no-print" aria-labelledby="editor-heading">
+      <div class="editor-intro">
+        <div>
+          <p class="eyebrow" data-i18n="editorEyebrow">Содержание CV</p>
+          <h2 id="editor-heading" data-i18n="editorTitle">Заполните основные разделы</h2>
+        </div>
+        <div class="privacy-badge">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Zm-3-10 2 2 4-4"/></svg>
+          <span data-i18n="privacy">Данные остаются в браузере</span>
+        </div>
+      </div>
+
+      <p class="guidance-note">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8v4m0 4h.01M10.3 3.6 2.2 18a2 2 0 0 0 1.7 3h16.2a2 2 0 0 0 1.7-3L13.7 3.6a2 2 0 0 0-3.4 0Z"/></svg>
+        <span data-i18n="twoPageHint">Оставляйте только релевантное — CV рекомендуется уместить максимум на двух страницах.</span>
+      </p>
+
+      <section class="form-section" aria-labelledby="personal-heading">
+        <div class="section-heading">
+          <span class="section-number" aria-hidden="true">01</span>
+          <div>
+            <h3 id="personal-heading" data-i18n="personal">Личные данные</h3>
+            <p data-i18n="personalHint">Контактная информация и желаемая роль</p>
+          </div>
+        </div>
+
+        <div class="photo-control">
+          <div class="photo-copy">
+            <label for="in-photo" data-i18n="photo">Фотография</label>
+            <span data-i18n="photoHint">Необязательно, портрет по грудь</span>
+          </div>
+          <div class="photo-actions">
+            <label class="secondary-button file-button" for="in-photo">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L7 9m5-5 5 5M5 14v5h14v-5"/></svg>
+              <span data-i18n="choosePhoto">Выбрать</span>
+            </label>
+            <input id="in-photo" class="visually-hidden" type="file" accept="image/*">
+            <button id="btn-remove-photo" type="button" class="text-button danger hidden" data-i18n="remove">Удалить</button>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <label class="field field-wide" for="in-name">
+            <span data-i18n="fullName">Имя и фамилия</span>
+            <input id="in-name" type="text" autocomplete="name" data-i18n-placeholder="fullNamePlaceholder">
+          </label>
+          <label class="field field-wide" for="in-title">
+            <span data-i18n="targetRole">Желаемая должность</span>
+            <input id="in-title" type="text" autocomplete="organization-title" data-i18n-placeholder="targetRolePlaceholder">
+          </label>
+          <label class="field" for="in-birth">
+            <span data-i18n="birthDate">Дата рождения</span>
+            <input id="in-birth" type="text" inputmode="numeric" data-i18n-placeholder="birthPlaceholder">
+          </label>
+          <label class="field" for="in-license">
+            <span data-i18n="license">Водительские права</span>
+            <input id="in-license" type="text" data-i18n-placeholder="licensePlaceholder">
+          </label>
+          <label class="field" for="in-email">
+            <span data-i18n="email">Электронная почта</span>
+            <input id="in-email" type="email" autocomplete="email" placeholder="name@example.com">
+          </label>
+          <label class="field" for="in-phone">
+            <span data-i18n="phone">Телефон</span>
+            <input id="in-phone" type="tel" autocomplete="tel" placeholder="+47 000 00 000">
+          </label>
+          <label class="field field-wide" for="in-address">
+            <span data-i18n="address">Город / адрес</span>
+            <input id="in-address" type="text" autocomplete="street-address" data-i18n-placeholder="addressPlaceholder">
+          </label>
+          <label class="field field-wide" for="in-links">
+            <span data-i18n="links">Профессиональные ссылки</span>
+            <input id="in-links" type="text" data-i18n-placeholder="linksPlaceholder">
+          </label>
+        </div>
+      </section>
+
+      <section class="form-section" aria-labelledby="summary-heading">
+        <div class="section-heading">
+          <span class="section-number" aria-hidden="true">02</span>
+          <div>
+            <h3 id="summary-heading" data-i18n="summary">Ключевые квалификации</h3>
+            <p data-i18n="summaryHint">Кратко адаптируйте сильные стороны под вакансию</p>
+          </div>
+        </div>
+        <label class="field" for="in-summary">
+          <span data-i18n="summaryLabel">Профессиональное резюме</span>
+          <textarea id="in-summary" rows="4" data-i18n-placeholder="summaryPlaceholder"></textarea>
+        </label>
+      </section>
+
+      <section class="form-section" aria-labelledby="experience-heading">
+        <div class="section-heading with-action">
+          <div class="section-title-group">
+            <span class="section-number" aria-hidden="true">03</span>
+            <div>
+              <h3 id="experience-heading" data-i18n="experience">Опыт работы</h3>
+              <p data-i18n="experienceHint">Начните с последнего места работы</p>
+            </div>
+          </div>
+          <button id="btn-add-exp" type="button" class="secondary-button compact-button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            <span data-i18n="add">Добавить</span>
+          </button>
+        </div>
+        <div id="form-exp-list" class="repeat-list"></div>
+      </section>
+
+      <section class="form-section" aria-labelledby="education-heading">
+        <div class="section-heading with-action">
+          <div class="section-title-group">
+            <span class="section-number" aria-hidden="true">04</span>
+            <div>
+              <h3 id="education-heading" data-i18n="education">Образование</h3>
+              <p data-i18n="educationHint">Укажите сначала последнее образование</p>
+            </div>
+          </div>
+          <button id="btn-add-edu" type="button" class="secondary-button compact-button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            <span data-i18n="add">Добавить</span>
+          </button>
+        </div>
+        <div id="form-edu-list" class="repeat-list"></div>
+      </section>
+
+      <section class="form-section" aria-labelledby="competence-heading">
+        <div class="section-heading">
+          <span class="section-number" aria-hidden="true">05</span>
+          <div>
+            <h3 id="competence-heading" data-i18n="competence">Дополнительная компетенция</h3>
+            <p data-i18n="competenceHint">Включайте только релевантные сведения</p>
+          </div>
+        </div>
+        <div class="stacked-fields">
+          <label class="field" for="in-cert">
+            <span data-i18n="certifications">Дипломы, сертификаты и допуски</span>
+            <textarea id="in-cert" rows="3" data-i18n-placeholder="certificationsPlaceholder"></textarea>
+          </label>
+          <label class="field" for="in-other">
+            <span data-i18n="otherExperience">Другой опыт и волонтёрство</span>
+            <textarea id="in-other" rows="3" data-i18n-placeholder="otherExperiencePlaceholder"></textarea>
+          </label>
+          <label class="field" for="in-courses">
+            <span data-i18n="courses">Курсы</span>
+            <textarea id="in-courses" rows="3" data-i18n-placeholder="coursesPlaceholder"></textarea>
+          </label>
+          <div class="form-grid">
+            <label class="field" for="in-lang">
+              <span data-i18n="languages">Языки</span>
+              <textarea id="in-lang" rows="3" data-i18n-placeholder="languagesPlaceholder"></textarea>
+            </label>
+            <label class="field" for="in-it">
+              <span data-i18n="itSkills">IT-навыки</span>
+              <textarea id="in-it" rows="3" data-i18n-placeholder="itSkillsPlaceholder"></textarea>
+            </label>
+          </div>
+          <label class="field" for="in-interests">
+            <span data-i18n="interests">Интересы</span>
+            <input id="in-interests" type="text" data-i18n-placeholder="interestsPlaceholder">
+          </label>
+        </div>
+      </section>
+
+      <section class="form-section" aria-labelledby="references-heading">
+        <div class="section-heading">
+          <span class="section-number" aria-hidden="true">06</span>
+          <div>
+            <h3 id="references-heading" data-i18n="references">Рекомендации</h3>
+            <p data-i18n="referencesHint">Обычно их предоставляют только по запросу работодателя</p>
+          </div>
+        </div>
+
+        <fieldset class="reference-options">
+          <legend class="visually-hidden" data-i18n="referencesMode">Способ отображения рекомендаций</legend>
+          <label class="reference-option">
+            <input type="radio" name="ref-mode" value="none" checked>
+            <span data-i18n="refNone">Не включать</span>
+          </label>
+          <label class="reference-option">
+            <input type="radio" name="ref-mode" value="request">
+            <span data-i18n="refRequest">По запросу</span>
+          </label>
+          <label class="reference-option">
+            <input type="radio" name="ref-mode" value="manual">
+            <span data-i18n="refManual">Ввести вручную</span>
+          </label>
+        </fieldset>
+
+        <label id="ref-custom-wrap" class="field hidden" for="in-ref-custom">
+          <span data-i18n="referenceContacts">Контакты рекомендателя</span>
+          <textarea id="in-ref-custom" rows="3" data-i18n-placeholder="referenceContactsPlaceholder"></textarea>
+        </label>
+      </section>
+    </aside>
+
+    <section class="preview-column" aria-label="Предпросмотр CV">
+      <div class="preview-toolbar no-print">
+        <div>
+          <span class="preview-status-dot" aria-hidden="true"></span>
+          <span data-i18n="livePreview">Предпросмотр обновляется автоматически</span>
+        </div>
+        <span class="a4-label">A4</span>
+      </div>
+
+      <div class="preview-stage">
+        <article id="cv-preview" class="cv-page" aria-label="CV preview">
+          <header class="cv-header">
+            <img id="out-photo" class="cv-photo hidden" alt="">
+            <div class="cv-identity">
+              <h1 id="out-name">ИМЯ ФАМИЛИЯ</h1>
+              <p id="out-title" class="cv-role hidden"></p>
+              <div id="out-contacts" class="cv-contacts" aria-label="Contact details"></div>
+            </div>
+          </header>
+
+          <section id="doc-sec-summary" class="cv-section hidden">
+            <h2 id="doc-hdr-summary">Nøkkelkvalifikasjoner</h2>
+            <p id="out-summary" class="pre-line"></p>
+          </section>
+
+          <section id="doc-sec-exp" class="cv-section hidden">
+            <h2 id="doc-hdr-exp">Arbeidserfaring</h2>
+            <div id="out-list-exp" class="cv-list"></div>
+          </section>
+
+          <section id="doc-sec-edu" class="cv-section hidden">
+            <h2 id="doc-hdr-edu">Utdanning</h2>
+            <div id="out-list-edu" class="cv-list"></div>
+          </section>
+
+          <section id="doc-sec-cert" class="cv-section hidden">
+            <h2 id="doc-hdr-cert">Fagbrev og sertifiseringer</h2>
+            <p id="out-cert" class="pre-line"></p>
+          </section>
+
+          <section id="doc-sec-other" class="cv-section hidden">
+            <h2 id="doc-hdr-other">Annen erfaring og verv</h2>
+            <p id="out-other" class="pre-line"></p>
+          </section>
+
+          <section id="doc-sec-courses" class="cv-section hidden">
+            <h2 id="doc-hdr-courses">Kurs</h2>
+            <p id="out-courses" class="pre-line"></p>
+          </section>
+
+          <div class="cv-two-column">
+            <section id="doc-sec-lang" class="cv-section hidden">
+              <h2 id="doc-hdr-lang">Språk</h2>
+              <p id="out-lang" class="pre-line"></p>
+            </section>
+            <section id="doc-sec-it" class="cv-section hidden">
+              <h2 id="doc-hdr-it">IT-kunnskaper</h2>
+              <p id="out-it" class="pre-line"></p>
+            </section>
+          </div>
+
+          <section id="doc-sec-interests" class="cv-section hidden">
+            <h2 id="doc-hdr-interests">Fritidsinteresser</h2>
+            <p id="out-interests"></p>
+          </section>
+
+          <section id="doc-sec-ref" class="cv-section hidden">
+            <h2 id="doc-hdr-ref">Referanser</h2>
+            <p id="out-ref" class="pre-line"></p>
+          </section>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>
