@@ -1,8 +1,8 @@
 # CV Studio
 
-Локальный мультиязычный конструктор резюме для GitHub Pages. Данные пользователя обрабатываются только в браузере; сервер и база данных не требуются.
+En lokal, flerspråklig CV-bygger for GitHub Pages. Alle brukerdata behandles utelukkende i nettleseren. Ingen server eller database er nødvendig.
 
-## Структура
+## Prosjektstruktur
 
 ```text
 .
@@ -18,32 +18,32 @@
 └── README.md
 ```
 
-## Возможности
+## Funksjoner
 
-- независимый язык интерфейса и готового CV;
-- условное скрытие пустых разделов;
-- динамический опыт работы и образование;
-- локальная загрузка фотографии через `FileReader`;
-- три режима рекомендаций: не включать, «по запросу» или ручной ввод;
-- адаптивный редактор и живой A4-предпросмотр;
-- печать через браузер без серверной генерации PDF;
-- предлагаемое имя PDF формата `Имя_Фамилия_CV_ГОД.pdf`.
+- Uavhengig valg av språk for brukergrensesnittet og den ferdige CV-en.
+- Automatisk skjuling av tomme seksjoner.
+- Dynamisk administrasjon av arbeidserfaring og utdanning.
+- Lokal opplasting av profilbilde ved hjelp av `FileReader`.
+- Tre alternativer for referanser: utelates, «Oppgis på forespørsel» eller manuell utfylling.
+- Responsivt redigeringsverktøy med direkte forhåndsvisning i A4-format.
+- Utskrift og lagring som PDF direkte fra nettleseren, uten PDF-generering på en server.
+- Foreslått PDF-filnavn i formatet `Fornavn_Etternavn_CV_ÅR.pdf`.
 
-## Источники структуры CV
+## Kilder til CV-strukturen
 
-- [Utdanning.no — Slik skriver du CV](https://utdanning.no/utdanningsvalg_artikkel_slik_skriver_du_cv)
-- [Arbeidsplassen NAV — Slik skriv du ein god CV](https://arbeidsplassen.nav.no/slik-skriver-du-en-god-cv)
+- [Utdanning.no – Slik skriver du CV](https://utdanning.no/utdanningsvalg_artikkel_slik_skriver_du_cv)
+- [Arbeidsplassen NAV – Slik skriv du ein god CV](https://arbeidsplassen.nav.no/slik-skriver-du-en-god-cv)
 
-## Локальный запуск
+## Lokal oppstart
 
-Проект использует ES-модули, поэтому открывайте его через локальный HTTP-сервер, а не напрямую как `file://`.
+Prosjektet bruker ES-moduler og må derfor kjøres via en lokal HTTP-server, ikke åpnes direkte med `file://`.
+
+Start en lokal server med følgende kommando i PowerShell:
 
 ```powershell
 py -m http.server 4174 --bind 127.0.0.1
 ```
 
-Затем откройте `http://127.0.0.1:4174/`.
+Åpne deretter følgende adresse i nettleseren:
 
-## GitHub Pages
-
-Разместите файлы в корне репозитория и выберите в настройках Pages публикацию из корня нужной ветки. Сборка не требуется.
+`http://127.0.0.1:4174/`
