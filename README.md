@@ -2,6 +2,8 @@
 
 En lokal, flerspråklig CV-bygger for GitHub Pages. Alle brukerdata behandles utelukkende i nettleseren. Ingen server eller database er nødvendig.
 
+Link> https://zanzyt.github.io/Cv-creater/
+
 ## Prosjektstruktur
 
 ```text
