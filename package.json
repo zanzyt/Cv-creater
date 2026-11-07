@@ -1,0 +1,31 @@
+{
+  "name": "cv-creater",
+  "version": "1.0.0",
+  "description": "En lokal, flerspråklig CV-bygger for GitHub Pages. Alle brukerdata behandles utelukkende i nettleseren. Ingen server eller database er nødvendig.",
+  "type": "module",
+  "homepage": "https://zanzyt.github.io/Cv-creater/",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zanzyt/Cv-creater.git"
+  },
+  "keywords": ["cv", "resume", "norway", "utdanning", "nav", "local-first"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "lucide-react": "^1.70.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.2.1",
+    "gh-pages": "^6.3.0",
+    "vite": "^8.3.6"
+  }
+}

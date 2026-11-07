@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="nb">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Local-first multilingual CV builder based on recommendations from Utdanning.no and NAV.">
+  <title>CV Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    if (window.pdfjsLib) {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    }
+  </script>
+</head>
+<body>
+  <a class="skip-link no-print" href="#main-content" data-i18n="skipToContent">Перейти к содержанию</a>
+  <header class="app-header no-print">
+    <div class="header-inner">
+      <div class="brand-block">
+        <div class="brand-mark" aria-hidden="true">CV</div>
+        <div class="brand-copy">
+          <h1 id="ui-title" data-i18n="appTitle">Конструктор резюме</h1>
+          <p class="standards-line">
+            <span data-i18n="standard">Стандарт:</span>
+            <a href="https://utdanning.no/utdanningsvalg_artikkel_slik_skriver_du_cv" target="_blank" rel="noopener noreferrer">Utdanning.no<span class="external-mark" aria-hidden="true">↗</span></a>
+            <span aria-hidden="true">&amp;</span>
+            <a href="https://arbeidsplassen.nav.no/slik-skriver-du-en-god-cv" target="_blank" rel="noopener noreferrer">NAV<span class="external-mark" aria-hidden="true">↗</span></a>
+          </p>
+        </div>
+      </div>
+
+      <div class="toolbar" aria-label="Настройки документа">
+        <label class="select-control" for="sel-ui-lang">
+          <span data-i18n="uiLanguage">Интерфейс</span>
+          <select id="sel-ui-lang">
+            <option value="nb" selected>Bokmål</option>
+            <option value="nn">Nynorsk</option>
+            <option value="en">English</option>
+            <option value="ru">Русский</option>
+          </select>
+        </label>
+
+        <label class="select-control" for="sel-cv-lang">
+          <span data-i18n="cvLanguage">Язык CV</span>
+          <select id="sel-cv-lang">
+            <option value="nb" selected>Norsk (Bokmål)</option>
+            <option value="nn">Norsk (Nynorsk)</option>
+            <option value="en">English</option>
+            <option value="ru">Русский</option>
+          </select>
+        </label>
+
+        <button type="button" id="btn-import-modal" class="toolbar-button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+          <span data-i18n="importCv">Импорт CV</span>
+        </button>
+
+        <button type="button" id="btn-export-json" class="toolbar-button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          <span data-i18n="exportJson">Экспорт JSON</span>
+        </button>
+
+        <button type="button" id="btn-print" class="primary-button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5M7 17h10v4H7v-4Zm-2 0H3v-7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v7h-2M17 12h.01"/></svg>
+          <span data-i18n="downloadPdf">Скачать PDF</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="workspace">
+    <aside id="cv-editor" class="editor-panel no-print" aria-labelledby="editor-heading">
+      <div class="editor-intro">
+        <div>
+          <p class="eyebrow" data-i18n="editorEyebrow">Содержание CV</p>
+          <h2 id="editor-heading" data-i18n="editorTitle">Заполните основные разделы</h2>
+        </div>
+        
+
+      <section class="form-section" aria-labelledby="personal-heading">
+        <div class="section-heading">
+          <span class="section-number" aria-hidden="true">01</span>
+          <div>
+            <h3 id="personal-heading" data-i18n="personal">Личные данные</h3>
+            <p data-i18n="personalHint">Контактная информация и желаемая роль</p>
+          </div>
+        </div>
+
+        <div class="photo-control">
+          <div class="photo-copy">
+            <label for="in-photo" data-i18n="photo">Фотография</label>
+            <span data-i18n="photoHint">Необязательно, портрет по грудь</span>
+          </div>
+          <div class="photo-actions">
+            <label class="secondary-button file-button" for="in-photo">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L7 9m5-5 5 5M5 14v5h14v-5"/></svg>
+              <span data-i18n="choosePhoto">Выбрать</span>
+            </label>
+            <input id="in-photo" class="visually-hidden" type="file" accept="image/*">
+            <button id="btn-remove-photo" type="button" class="text-button danger hidden" data-i18n="remove">Удалить</button>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <label class="field field-wide" for="in-name">
+            <span data-i18n="fullName">Имя и фамилия</span>
+            <input id="in-name" type="text" autocomplete="name" data-i18n-placeholder="fullNamePlaceholder">
+          </label>
+          <label class="field field-wide" for="in-title">
+            <span data-i18n="targetRole">Желаемая должность</span>
+            <input id="in-title" type="text" autocomplete="organization-title" data-i18n-placeholder="targetRolePlaceholder">
+          </label>
+          <label class="field" for="in-birth">
+            <span data-i18n="birthDate">Дата рождения</span>
+            <input id="in-birth" type="text" inputmode="numeric" data-i18n-placeholder="birthPlaceholder">
+          </label>
+          <label class="field" for="in-license">
+            <span data-i18n="license">Водительские права</span>
+            <input id="in-license" type="text" data-i18n-placeholder="licensePlaceholder">
+          </label>
+          <label class="field" for="in-email">
+            <span data-i18n="email">Электронная почта</span>
+            <input id="in-email" type="email" autocomplete="email" placeholder="name@example.com">
+          </label>
+          <label class="field" for="in-phone">
+            <span data-i18n="phone">Телефон</span>
+            <input id="in-phone" type="tel" autocomplete="tel" placeholder="+47 000 00 000">
+          </label>
+          <label class="field field-wide" for="in-address">
+            <span data-i18n="address">Город / адрес</span>
+            <input id="in-address" type="text" autocomplete="street-address" data-i18n-placeholder="addressPlaceholder">
+          </label>
+          <label class="field field-wide" for="in-links">
+            <span data-i18n="links">Профессиональные ссылки</span>
+            <input id="in-links" type="text" data-i18n-placeholder="linksPlaceholder">
+          </label>
+        </div>
+      </section>
+
+      <section class="form-section" aria-labelledby="summary-heading">
+        <div class="section-heading">
+          <span class="section-number" aria-hidden="true">02</span>
+          <div>
+            <h3 id="summary-heading" data-i18n="summary">Ключевые квалификации</h3>
+            <p data-i18n="summaryHint">Кратко адаптируйте сильные стороны под вакансию</p>
+          </div>
+        </div>
+        <label class="field" for="in-summary">
+          <span data-i18n="summaryLabel">Профессиональное резюме</span>
+          <textarea id="in-summary" rows="4" data-i18n-placeholder="summaryPlaceholder"></textarea>
+        </label>
+      </section>
+
+      <section class="form-section" aria-labelledby="experience-heading">
+        <div class="section-heading with-action">
+          <div class="section-title-group">
+            <span class="section-number" aria-hidden="true">03</span>
+            <div>
+              <h3 id="experience-heading" data-i18n="experience">Опыт работы</h3>
+              <p data-i18n="experienceHint">Начните с последнего места работы</p>
+            </div>
+          </div>
+          <button id="btn-add-exp" type="button" class="secondary-button compact-button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            <span data-i18n="add">Добавить</span>
+          </button>
+        </div>
+        <div id="form-exp-list" class="repeat-list"></div>
+      </section>
+
+      <section class="form-section" aria-labelledby="education-heading">
+        <div class="section-heading with-action">
+          <div class="section-title-group">
+            <span class="section-number" aria-hidden="true">04</span>
+            <div>
+              <h3 id="education-heading" data-i18n="education">Образование</h3>
+              <p data-i18n="educationHint">Укажите сначала последнее образование</p>
+            </div>
+          </div>
+          <button id="btn-add-edu" type="button" class="secondary-button compact-button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            <span data-i18n="add">Добавить</span>
+          </button>
+        </div>
+        <div id="form-edu-list" class="repeat-list"></div>
+      </section>
+
+      <section class="form-section" aria-labelledby="competence-heading">
+        <div class="section-heading">
+          <span class="section-number" aria-hidden="true">05</span>
+          <div>
+            <h3 id="competence-heading" data-i18n="competence">Дополнительная компетенция</h3>
+            <p data-i18n="competenceHint">Включайте только релевантные сведения</p>
+          </div>
+        </div>
+        <div class="stacked-fields">
+          <label class="field" for="in-cert">
+            <span data-i18n="certifications">Дипломы, сертификаты и допуски</span>
+            <textarea id="in-cert" rows="3" data-i18n-placeholder="certificationsPlaceholder"></textarea>
+          </label>
+          <label class="field" for="in-other">
+            <span data-i18n="otherExperience">Другой опыт и волонтёрство</span>
+            <textarea id="in-other" rows="3" data-i18n-placeholder="otherExperiencePlaceholder"></textarea>
+          </label>
+          <label class="field" for="in-courses">
+            <span data-i18n="courses">Курсы</span>
+            <textarea id="in-courses" rows="3" data-i18n-placeholder="coursesPlaceholder"></textarea>
+          </label>
+          <div class="form-grid">
+            <label class="field" for="in-lang">
+              <span data-i18n="languages">Языки</span>
+              <textarea id="in-lang" rows="3" data-i18n-placeholder="languagesPlaceholder"></textarea>
+            </label>
+            <label class="field" for="in-it">
+              <span data-i18n="itSkills">IT-навыки</span>
+              <textarea id="in-it" rows="3" data-i18n-placeholder="itSkillsPlaceholder"></textarea>
+            </label>
+          </div>
+          <label class="field" for="in-interests">
+            <span data-i18n="interests">Интересы</span>
+            <input id="in-interests" type="text" data-i18n-placeholder="interestsPlaceholder">
+          </label>
+        </div>
+      </section>
+
+      <section class="form-section" aria-labelledby="references-heading">
+        <div class="section-heading">
+          <span class="section-number" aria-hidden="true">06</span>
+          <div>
+            <h3 id="references-heading" data-i18n="references">Рекомендации</h3>
+            <p data-i18n="referencesHint">Обычно их предоставляют только по запросу работодателя</p>
+          </div>
+        </div>
+
+        <fieldset class="reference-options">
+          <legend class="visually-hidden" data-i18n="referencesMode">Способ отображения рекомендаций</legend>
+          <label class="reference-option">
+            <input type="radio" name="ref-mode" value="none" checked>
+            <span data-i18n="refNone">Не включать</span>
+          </label>
+          <label class="reference-option">
+            <input type="radio" name="ref-mode" value="request">
+            <span data-i18n="refRequest">По запросу</span>
+          </label>
+          <label class="reference-option">
+            <input type="radio" name="ref-mode" value="manual">
+            <span data-i18n="refManual">Ввести вручную</span>
+          </label>
+        </fieldset>
+
+        <label id="ref-custom-wrap" class="field hidden" for="in-ref-custom">
+          <span data-i18n="referenceContacts">Контакты рекомендателя</span>
+          <textarea id="in-ref-custom" rows="3" data-i18n-placeholder="referenceContactsPlaceholder"></textarea>
+        </label>
+      </section>
+    </aside>
+
+    <section class="preview-column" aria-label="Предпросмотр CV">
+      <div class="preview-toolbar no-print">
+        <div>
+          <span class="preview-status-dot" aria-hidden="true"></span>
+          <span data-i18n="livePreview">Предпросмотр обновляется автоматически</span>
+        </div>
+        <span class="a4-label">A4</span>
+      </div>
+
+      <div class="preview-stage">
+        <article id="cv-preview" class="cv-page" aria-label="CV preview">
+          <header class="cv-header">
+            <img id="out-photo" class="cv-photo hidden" alt="">
+            <div class="cv-identity">
+              <h1 id="out-name">ИМЯ ФАМИЛИЯ</h1>
+              <p id="out-title" class="cv-role hidden"></p>
+              <div id="out-contacts" class="cv-contacts" aria-label="Contact details"></div>
+            </div>
+          </header>
+
+          <section id="doc-sec-summary" class="cv-section hidden">
+            <h2 id="doc-hdr-summary">Nøkkelkvalifikasjoner</h2>
+            <p id="out-summary" class="pre-line"></p>
+          </section>
+
+          <section id="doc-sec-exp" class="cv-section hidden">
+            <h2 id="doc-hdr-exp">Arbeidserfaring</h2>
+            <div id="out-list-exp" class="cv-list"></div>
+          </section>
+
+          <section id="doc-sec-edu" class="cv-section hidden">
+            <h2 id="doc-hdr-edu">Utdanning</h2>
+            <div id="out-list-edu" class="cv-list"></div>
+          </section>
+
+          <section id="doc-sec-cert" class="cv-section hidden">
+            <h2 id="doc-hdr-cert">Fagbrev og sertifiseringer</h2>
+            <p id="out-cert" class="pre-line"></p>
+          </section>
+
+          <section id="doc-sec-other" class="cv-section hidden">
+            <h2 id="doc-hdr-other">Annen erfaring og verv</h2>
+            <p id="out-other" class="pre-line"></p>
+          </section>
+
+          <section id="doc-sec-courses" class="cv-section hidden">
+            <h2 id="doc-hdr-courses">Kurs</h2>
+            <p id="out-courses" class="pre-line"></p>
+          </section>
+
+          <div class="cv-two-column">
+            <section id="doc-sec-lang" class="cv-section hidden">
+              <h2 id="doc-hdr-lang">Språk</h2>
+              <p id="out-lang" class="pre-line"></p>
+            </section>
+            <section id="doc-sec-it" class="cv-section hidden">
+              <h2 id="doc-hdr-it">IT-kunnskaper</h2>
+              <p id="out-it" class="pre-line"></p>
+            </section>
+          </div>
+
+          <section id="doc-sec-interests" class="cv-section hidden">
+            <h2 id="doc-hdr-interests">Fritidsinteresser</h2>
+            <p id="out-interests"></p>
+          </section>
+
+          <section id="doc-sec-ref" class="cv-section hidden">
+            <h2 id="doc-hdr-ref">Referanser</h2>
+            <p id="out-ref" class="pre-line"></p>
+          </section>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="modal-import" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-import-title">
+    <div class="modal-window">
+      <div class="modal-header">
+        <div>
+          <h2 id="modal-import-title" data-i18n="importModalTitle">Импорт старого резюме</h2>
+          <p class="modal-subtitle" data-i18n="importModalSubtitle">Загрузите файл резюме (.docx, .pdf, .json, .txt) или вставьте текст</p>
+        </div>
+        <button type="button" id="btn-close-modal" class="modal-close" aria-label="Закрыть">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Step 1: Input -->
+      <div id="import-step-input" class="modal-step">
+        <div class="modal-tabs" role="tablist">
+          <button type="button" class="tab-btn active" id="tab-btn-file" data-i18n="tabFile">Загрузить файл</button>
+          <button type="button" class="tab-btn" id="tab-btn-paste" data-i18n="tabPaste">Вставить текст</button>
+        </div>
+
+        <div id="panel-file" class="tab-panel">
+          <div id="import-dropzone" class="dropzone">
+            <svg class="dropzone-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="12" y1="18" x2="12" y2="12"/>
+              <line x1="9" y1="15" x2="12" y2="12"/>
+              <line x1="15" y1="15" x2="12" y2="12"/>
+            </svg>
+            <p class="dropzone-title" data-i18n="dropzoneTitle">Перетащите файл резюме сюда</p>
+            <span class="dropzone-or" data-i18n="dropzoneOr">или</span>
+            <label for="import-file-input" class="secondary-button dropzone-btn" data-i18n="selectFile">Выбрать файл</label>
+            <input type="file" id="import-file-input" class="visually-hidden" accept=".docx,.pdf,.json,.txt,.md">
+            <p class="dropzone-hint" data-i18n="supportedFormats">Word (.docx), PDF, JSON, TXT, Markdown</p>
+          </div>
+
+          <div id="selected-file-banner" class="selected-file-banner hidden">
+            <div class="file-info">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+              <div>
+                <strong id="selected-file-name">filename.docx</strong>
+                <span id="selected-file-size">124 KB</span>
+              </div>
+            </div>
+            <button type="button" id="btn-remove-selected-file" class="text-button danger" aria-label="Удалить файл">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div id="panel-paste" class="tab-panel hidden">
+          <textarea id="import-pasted-text" class="modal-textarea" rows="9" data-i18n-placeholder="pastePlaceholder" placeholder="Вставьте текст вашего старого резюме сюда..."></textarea>
+        </div>
+
+        <!-- Optional AI enhancer -->
+        <details class="ai-details">
+          <summary class="ai-summary">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <span data-i18n="aiEnhanceTitle">Avansert parsing (Gemini API)</span>
+          </summary>
+          <div class="ai-body">
+            <p class="ai-hint" data-i18n="aiEnhanceHint">Valgfritt: oppgi gratis Gemini API-nøkkel for komplekse dokumentoppsett</p>
+            <input type="password" id="import-api-key" class="text-input" data-i18n-placeholder="apiKeyPlaceholder" placeholder="Gemini API Key (AIzaSy...)">
+            <div class="ai-settings-row">
+              <details class="ai-advanced-details">
+                <summary class="ai-advanced-summary">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+                  <span data-i18n="advancedSettings">Avansert</span>
+                </summary>
+                <div class="form-grid ai-config-grid">
+                  <label class="field compact-field" for="import-api-model">
+                    <span class="field-label-sm" data-i18n="modelLabel">Modell:</span>
+                    <select id="import-api-model" class="select-input-sm">
+                      <option value="gemini-3.8-flash" selected data-i18n="modelOptionFlash">Gemini 3.8 Flash (Google AI Studio)</option>
+                      <option value="gemini-3.5-flash-lite" data-i18n="modelOption15Flash">Gemini 3.5 Flash Lite</option>
+                    </select>
+                  </label>
+                  <label class="field compact-field" for="import-api-baseurl">
+                    <span class="field-label-sm" data-i18n="baseUrlLabel">Base URL (valgfritt):</span>
+                    <input type="text" id="import-api-baseurl" class="text-input-sm" data-i18n-placeholder="baseUrlPlaceholder" placeholder="Standard (Google API)">
+                  </label>
+                </div>
+              </details>
+              <button type="button" id="btn-toggle-video-guide" class="btn-guide-toggle">
+                <svg viewBox="0 0 24 24" aria-hidden="true" width="13" height="13"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <span data-i18n="howToGetApiKey">Hvordan få API-nøkkel?</span>
+              </button>
+            </div>
+            <div id="vanilla-video-guide-card" class="api-video-guide-card hidden">
+              <div class="video-player-frame">
+                <video controls playsinline preload="metadata" src="./how-to-gemini-key.mp4" class="guide-video-element"></video>
+              </div>
+              <div class="video-credit-footer">
+                <div class="video-credit-source">
+                  <span data-i18n="videoCredit">Video av GEEKrar</span>:
+                  <a href="https://www.youtube.com/@Geekrar" target="_blank" rel="noopener noreferrer" class="credit-link author-link">GEEKrar ↗</a>
+                </div>
+                <div class="video-credit-cta">
+                  <span class="free-quota-text" data-i18n="noCreditCardNeeded">Gratis kvote — kredittkort kreves ikke</span>
+                  <a href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer" class="credit-link studio-link" data-i18n="openAiStudio">Åpne Google AI Studio ↗</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <div id="import-status-msg" class="import-status-msg hidden"></div>
+
+        <div class="modal-footer">
+          <button type="button" id="btn-cancel-modal" class="secondary-button" data-i18n="cancel">Отмена</button>
+          <button type="button" id="btn-parse-data" class="primary-button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>
+            <span data-i18n="btnParse">Распознать данные</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Review -->
+      <div id="import-step-review" class="modal-step hidden">
+        <h3 class="review-title" data-i18n="reviewTitle">Проверьте распознанные данные перед переносом</h3>
+
+        <div class="review-cards">
+          <div class="review-card">
+            <h4 class="review-card-title" data-i18n="personal">Личные данные</h4>
+            <div id="review-personal" class="review-card-content">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <div class="review-card">
+            <h4 class="review-card-title" data-i18n="experience">Опыт работы</h4>
+            <div id="review-experience" class="review-card-content">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <div class="review-card">
+            <h4 class="review-card-title" data-i18n="education">Образование</h4>
+            <div id="review-education" class="review-card-content">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <div class="review-card">
+            <h4 class="review-card-title" data-i18n="competence">Навыки и другое</h4>
+            <div id="review-competence" class="review-card-content">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+
+        <div class="import-mode-group">
+          <label class="radio-option">
+            <input type="radio" name="import-mode" value="replace" checked>
+            <span data-i18n="importModeReplace">Заменить текущие данные</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="import-mode" value="merge">
+            <span data-i18n="importModeMerge">Дополнить пустые поля</span>
+          </label>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="btn-back-to-input" class="secondary-button" data-i18n="back">Назад</button>
+          <button type="button" id="btn-apply-import" class="primary-button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>
+            <span data-i18n="applyImport">Перенести в резюме</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>
